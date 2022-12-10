@@ -31,14 +31,14 @@ func main() {
 		_, err := r.ReadBytes(byte('\n'))
 		switch err {
 		case nil:
+			_, err = conn.Write([]byte("+PONG\r\n"))
+			if err != nil {
+				fmt.Println("Error writing response: ", err.Error())
+			}
 			break
 		case io.EOF:
 		default:
 			fmt.Println("ERROR", err)
-		}
-		_, err = conn.Write([]byte("+PONG\r\n"))
-		if err != nil {
-			fmt.Println("Error writing response: ", err.Error())
 		}
 	}
 }
