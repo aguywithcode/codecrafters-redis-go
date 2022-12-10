@@ -27,18 +27,19 @@ func main() {
 	defer conn.Close()
 	fmt.Println("Connection accepted, responding to ping")
 	r := bufio.NewReader(conn)
+	w := bufio.NewWriter(conn)
 	for {
 		_, err := r.ReadBytes(byte('\n'))
 		switch err {
 		case nil:
-			_, err = conn.Write([]byte("+PONG\r\n"))
-			if err != nil {
-				fmt.Println("Error writing response: ", err.Error())
-			}
 			break
 		case io.EOF:
 		default:
 			fmt.Println("ERROR", err)
 		}
+		if _, err := w.WriteString("+PONG\r\n"); err != nil {
+			fmt.Println("Error writing response: ", err.Error())
+		}
+		w.Flush()
 	}
 }
