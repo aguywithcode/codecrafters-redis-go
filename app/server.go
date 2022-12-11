@@ -26,13 +26,13 @@ func main() {
 	}
 	defer conn.Close()
 	fmt.Println("Connection accepted...waiting for ping")
-	r := bufio.NewReader(conn)
 	w := bufio.NewWriter(conn)
 	for {
-		req, err := r.ReadBytes(byte('\n'))
+		buf := make([]byte, 1024)
+		_, err := conn.Read(buf)
 		switch err {
 		case nil:
-			fmt.Println("Ping received, sending response", string(req))
+			fmt.Println("Ping received, sending response", string(buf))
 			break
 		case io.EOF:
 			fmt.Println("Eof received")
