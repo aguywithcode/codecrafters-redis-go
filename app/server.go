@@ -35,6 +35,7 @@ func main() {
 			fmt.Println("Ping received, sending response")
 			break
 		case io.EOF:
+			return
 		default:
 			fmt.Println("ERROR", err)
 		}
