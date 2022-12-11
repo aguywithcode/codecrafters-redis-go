@@ -29,12 +29,13 @@ func main() {
 	r := bufio.NewReader(conn)
 	w := bufio.NewWriter(conn)
 	for {
-		_, err := r.ReadBytes(byte('\n'))
+		req, err := r.ReadBytes(byte('\n'))
 		switch err {
 		case nil:
-			fmt.Println("Ping received, sending response")
+			fmt.Println("Ping received, sending response", string(req))
 			break
 		case io.EOF:
+			fmt.Println("Eof received")
 			return
 		default:
 			fmt.Println("ERROR", err)
